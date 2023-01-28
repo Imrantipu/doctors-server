@@ -17,6 +17,22 @@ const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 
+async function run() {
+  try {
+    const appointmentOptionsCollection = client.db("dentalService").collection("appointmentOptions");
+
+    app.get('/appointmentOptions', async (req, res) => {
+        const query = {};
+        const options = await appointmentOptionsCollection.find(query).toArray();
+        res.send(options);
+      })
+    
+  } finally {
+   
+  }
+}
+run().catch(console.log);
+
 app.get('/', (req, res) => {
   res.send('Dental server running')
 })
@@ -24,3 +40,6 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Dental server running on port ${port}`)
 })
+
+
+

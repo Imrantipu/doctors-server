@@ -21,6 +21,7 @@ async function run() {
   try {
     const appointmentOptionsCollection = client.db("dentalService").collection("appointmentOptions");
     const bookingsCollection = client.db("dentalService").collection("bookings");
+    const usersCollection = client.db("dentalService").collection("users");
 
     app.get('/appointmentOptions', async (req, res) => {
       const date = req.query.date;
@@ -62,6 +63,12 @@ async function run() {
       const result = await bookingsCollection.insertOne(booking);
       res.send(result);
     })
+
+    app.post("/users" , async (req,res)=>{
+      const user = req.body;
+      const result = await usersCollection.insertOne(user);
+      res.send(result);
+    });
 
     
   } finally {

@@ -36,6 +36,7 @@ async function run() {
     const appointmentOptionsCollection = client.db("dentalService").collection("appointmentOptions");
     const bookingsCollection = client.db("dentalService").collection("bookings");
     const usersCollection = client.db("dentalService").collection("users");
+    const doctorsCollection = client.db("dentalService").collection("doctor");
 
     app.get('/appointmentOptions', async (req, res) => {
       const date = req.query.date;
@@ -123,6 +124,12 @@ async function run() {
     app.get("/appointmentSpecialty", async (req, res) => {
       const query = {};
       const result = await appointmentOptionsCollection.find(query).project({ name: 1 }).toArray();
+      res.send(result);
+    });
+
+    app.post("/doctors", verifyJWT, verifyAdmin, async (req, res) => {
+      const doctor = req.body;
+      const result = await doctorsCollection.insertOne(doctor);
       res.send(result);
     });
      

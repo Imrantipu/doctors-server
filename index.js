@@ -75,6 +75,12 @@ async function run() {
         const bookings = await bookingsCollection.find(query).toArray();
         res.send(bookings);
       });
+      app.get("/bookings/:id", async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: ObjectId(id) };
+        const booking = await bookingsCollection.findOne(query);
+        res.send(booking);
+      });
 
       app.post('/bookings', async (req, res) => {
       const booking = req.body;
@@ -163,18 +169,18 @@ async function run() {
       }
       res.status(403).send({ accessToken: "" });
     });
-// update price to all appointmentCollections 
-    app.get('/addPrice', async (req, res) => {
-      const filter = {}
-      const options = { upsert: true }
-      const updatedDoc = {
-          $set: {
-              price: 99
-          }
-      }
-      const result = await appointmentOptionsCollection.updateMany(filter, updatedDoc, options);
-      res.send(result);
-  })
+// // update price to all appointmentCollections 
+//     app.get('/addPrice', async (req, res) => {
+//       const filter = {}
+//       const options = { upsert: true }
+//       const updatedDoc = {
+//           $set: {
+//               price: 99
+//           }
+//       }
+//       const result = await appointmentOptionsCollection.updateMany(filter, updatedDoc, options);
+//       res.send(result);
+//   })
     
   } finally {
    

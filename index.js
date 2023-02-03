@@ -127,7 +127,13 @@ async function run() {
       res.send(result);
     });
 
-    app.post("/doctors", verifyJWT, verifyAdmin, async (req, res) => {
+    app.get("/doctors", async (req, res) => {
+      const query = {};
+      const doctors = await doctorsCollection.find(query).toArray();
+      res.send(doctors);
+    });
+
+    app.post("/doctors", async (req, res) => {
       const doctor = req.body;
       const result = await doctorsCollection.insertOne(doctor);
       res.send(result);

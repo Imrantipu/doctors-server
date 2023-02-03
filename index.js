@@ -119,6 +119,12 @@ async function run() {
       const result = await usersCollection.updateOne(filter, updateDoc, options);
       res.send(result);
     })
+
+    app.get("/appointmentSpecialty", async (req, res) => {
+      const query = {};
+      const result = await appointmentOptionsCollection.find(query).project({ name: 1 }).toArray();
+      res.send(result);
+    });
      
     app.get("/jwt", async (req, res) => {
       const email = req.query.email;

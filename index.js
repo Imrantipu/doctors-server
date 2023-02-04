@@ -38,6 +38,7 @@ async function run() {
     const bookingsCollection = client.db("dentalService").collection("bookings");
     const usersCollection = client.db("dentalService").collection("users");
     const doctorsCollection = client.db("dentalService").collection("doctor");
+    const paymentsCollection = client.db("dentalService").collection("payments");
     //  verify admin depends on database so written inside try function, it must be used after verifying JWT.
     const verifyAdmin = async (req, res, next) => {
       const decodedEmail = req.decoded.email;
@@ -171,6 +172,12 @@ async function run() {
       res.send({
         clientSecret: paymentIntent.client_secret,
       });
+    });
+
+    app.post("/payments", async (req, res) => {
+      const payment = req.body;
+      const result = await paymentsCollection.insertOne(payment);
+      res.send(result);
     });
      
     app.get("/jwt", async (req, res) => {
